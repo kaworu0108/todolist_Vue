@@ -31,11 +31,14 @@
             <li v-for="item in list"
               :key="item.name"
               class="list-group-item text-left">
+              <!-- checkbox -->
               <input type="checkbox"
                 name="finish"
                 :id="item.id"
-                v-model="item.finish">
-              {{item.name}}
+                v-model="item.finish"
+                @check="changelist(key)">
+              <label :for="item.id"> {{item.name}}</label>
+
               <!-- deletebutton -->
               <input type="button"
                 value="x"
@@ -91,7 +94,7 @@ export default {
       ],
       donelist: [
         {
-          id: Number,
+          id: 1,
           name: "",
           finish: true
         }
@@ -113,10 +116,13 @@ export default {
     },
     del: function(key) {
       this.list.splice(key, 1);
+    },
+    changelist: function() {
+      this.donelist.push({
+        name: this.item,
+        finish: true
+      });
     }
-    // finish: function(key) {
-    //   this.list[key].finish = !this.list[key].finish;
-    // }
   }
 };
 </script>
