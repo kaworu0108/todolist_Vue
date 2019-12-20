@@ -1,6 +1,6 @@
 <template>
 
-  <div class="hello">
+  <div class="todolist">
     <h1 class="text-primary">{{ msg }}</h1>
     <div>
       <span>目前清單裡有<span class="text-success">{{list.length}}</span>
@@ -23,19 +23,47 @@
         @click="addTodo">新增</button>
     </div>
     <!-- list -->
-    <div class="w-75 m-auto">
-      <ol class="list-group list-group-flush">
-        <li v-for="item in list"
-          :key="item.name"
-          class="list-group-item text-left">
-          {{item.name}}
-          <!-- deletebutton -->
-          <input type="button"
-            value="x"
-            @click="del(key)"
-            :id="item.id">
-        </li>
-      </ol>
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-5 border-info border p-4 mr-1">
+          <h3>Todo</h3>
+          <ol class="list-group list-group-flush">
+            <li v-for="item in list"
+              :key="item.name"
+              class="list-group-item text-left">
+              <input type="checkbox"
+                name="finish"
+                :id="item.id"
+                v-model="item.finish">
+              {{item.name}}
+              <!-- deletebutton -->
+              <input type="button"
+                value="x"
+                @click="del(key)">
+            </li>
+          </ol>
+        </div>
+        <!-- done -->
+        <div class="col-5 border-info border p-4">
+          <h3>Done</h3>
+          <ol class="list-group list-group-flush"
+            v-if="donelist.name">
+            <li v-for="item in donelist"
+              :key="item.name"
+              class="list-group-item text-left">
+              <input type="checkbox"
+                name="finish"
+                :id="item.id"
+                v-model="item.finish">
+              {{item.name}}
+              <!-- deletebutton -->
+              <input type="button"
+                value="x"
+                @click="del(key)">
+            </li>
+          </ol>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -51,23 +79,44 @@ export default {
       newtodo: "",
       list: [
         {
+          id: 1,
           name: "練習vue.js",
           finish: false
         },
         {
+          id: 2,
           name: "練習切版",
           finish: false
+        }
+      ],
+      donelist: [
+        {
+          id: Number,
+          name: "",
+          finish: true
         }
       ]
     };
   },
   methods: {
     addTodo: function() {
-      this.list.push({
-        name: this.newtodo,
-        finish: false
-      });
+      if (this.newtodo.length > 0) {
+        this.list.push({
+          name: this.newtodo,
+          finish: false
+        });
+      } else {
+        alert("請輸入待辦事項");
+      }
+
+      this.newtodo = "";
+    },
+    del: function(key) {
+      this.list.splice(key, 1);
     }
+    // finish: function(key) {
+    //   this.list[key].finish = !this.list[key].finish;
+    // }
   }
 };
 </script>
@@ -75,7 +124,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
-  margin: 40px 0 0;
+  margin: 0;
 }
 ul {
   list-style-type: none;
