@@ -28,7 +28,7 @@
         <div class="col-5 border-info border p-4 mr-1">
           <h3>Todo</h3>
           <ol class="list-group list-group-flush">
-            <li v-for="item in list"
+            <li v-for="item in task"
               :key="item.name"
               class="list-group-item text-left">
               <!-- checkbox -->
@@ -49,9 +49,8 @@
         <!-- done -->
         <div class="col-5 border-info border p-4">
           <h3>Done</h3>
-          <ol class="list-group list-group-flush"
-            v-if="donelist.name">
-            <li v-for="item in donelist"
+          <ol class="list-group list-group-flush">
+            <li v-for="item in taskdone"
               :key="item.name"
               class="list-group-item text-left">
               <input type="checkbox"
@@ -91,15 +90,20 @@ export default {
           name: "練習切版",
           finish: false
         }
-      ],
-      donelist: [
-        {
-          id: 1,
-          name: "",
-          finish: true
-        }
       ]
     };
+  },
+  computed: {
+    taskdone() {
+      return this.list.filter(function(item) {
+        return item.finish;
+      });
+    },
+    task() {
+      return this.list.filter(function(item) {
+        return !item.finish;
+      });
+    }
   },
   methods: {
     addTodo: function() {
@@ -116,12 +120,6 @@ export default {
     },
     del: function(key) {
       this.list.splice(key, 1);
-    },
-    changelist: function() {
-      this.donelist.push({
-        name: this.item,
-        finish: true
-      });
     }
   }
 };
